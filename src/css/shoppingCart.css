@@ -1,0 +1,11 @@
+.item-link-navigate {
+    color: black;
+    font-size: 1.3rem;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+.item-link-navigate:hover {
+    color: #0a58ca;
+}
