@@ -1,0 +1,22 @@
+@media (max-width: 499.98px) {
+    .addresses-flex {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .action-btns-container {
+        margin-left: 0.6rem;
+        margin-top: 1rem;
+    }
+}
+
+@media (min-width: 500px) {
+    .addresses-flex {
+        align-items: center;
+    }
+
+    .action-btns-container {
+        margin-top: 0px;
+        margin-left: 2rem;
+    }
+}

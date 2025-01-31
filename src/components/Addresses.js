@@ -1,3 +1,4 @@
+import "../css/addresses.css";
 import Header from "./Header";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -61,28 +62,26 @@ const Addresses = () => {
                   {shipAddresses.map((shipAddress) => (
                     <div
                       key={shipAddress._id}
-                      className="d-flex align-items-center mb-3"
+                      className="d-flex justify-content-start mb-3 addresses-flex"
                     >
-                      <div>
-                        <div className="ms-2">
-                          <p className="m-0">
-                            <strong>{shipAddress.userFullName}</strong>
-                            <span className="fw-lighter ms-3">
-                              {shipAddress.addressType}
-                            </span>
-                            {shipAddress.isDefault && (
-                              <span className="fw-lighter ms-3">Default</span>
-                            )}
-                          </p>
-                          <p className="m-0">{`${shipAddress.address}, ${shipAddress.locality}, ${shipAddress.district}, ${shipAddress.state}, ${shipAddress.pincode}`}</p>
-                          <p className="m-0">
-                            Phone number: {shipAddress.mobileNumber}
-                          </p>
-                        </div>
+                      <div className="ms-2">
+                        <p className="m-0">
+                          <strong>{shipAddress.userFullName}</strong>
+                          <span className="fw-lighter ms-3">
+                            {shipAddress.addressType}
+                          </span>
+                          {shipAddress.isDefault && (
+                            <span className="fw-lighter ms-3">Default</span>
+                          )}
+                        </p>
+                        <p className="m-0">{`${shipAddress.address}, ${shipAddress.locality}, ${shipAddress.district}, ${shipAddress.state}, ${shipAddress.pincode}`}</p>
+                        <p className="m-0">
+                          Phone number: {shipAddress.mobileNumber}
+                        </p>
                       </div>
 
-                      <div className="ms-5">
-                        <div className="d-flex justify-content-between">
+                      <div className="action-btns-container">
+                        <div className="d-flex">
                           {!shipAddress.isDefault && (
                             <button
                               className="btn btn-sm btn-warning"

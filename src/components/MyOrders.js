@@ -1,3 +1,4 @@
+import "../css/myOrders.css";
 import Header from "./Header";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +17,15 @@ const MyOrders = () => {
     );
 
     return totalValue.toLocaleString("en-IN");
+  };
+
+  const concatenateOrdersName = (items) => {
+    const concatStr = items.map((item) => item.itemName).join(", ");
+    if (items.length === 1) {
+      return `${concatStr}`;
+    } else {
+      return `${concatStr.slice(0, 50) + "..."}`;
+    }
   };
 
   const handleOrderCardClick = (orderId) => {
@@ -40,15 +50,22 @@ const MyOrders = () => {
                 .map((data) => (
                   <div key={data._id} className="mb-4">
                     <div className="card cursor-pointer">
-                      <div className="card-header">
-                        {new Date(data.createdAt).toLocaleDateString()}
+                      <div className="card-header d-flex justify-content-between">
+                        <span>
+                          {new Date(data.createdAt).toLocaleDateString()}
+                        </span>
+
+                        <span className="header-price-div">
+                          {data.orderedItems &&
+                            ` ₹ ${calculateTotalOrderValue(data.orderedItems)}`}
+                        </span>
                       </div>
                       <div
                         className="card-body d-flex align-items-center"
                         style={{ cursor: "pointer" }}
                         onClick={() => handleOrderCardClick(data._id)}
                       >
-                        <div style={{ width: "10%" }}>
+                        <div className="col-lg-1 col-md-2 col-sm-2 col-2">
                           <img
                             src={data.orderedItems[0].imageUrl}
                             alt="ordered items poster"
@@ -56,26 +73,25 @@ const MyOrders = () => {
                           />
                           {data.orderedItems.length > 1 && (
                             <div className="text-center">
-                              <span className="fw-light">
+                              <small className="fw-light">
                                 {data.orderedItems.length - 1 + " more items"}
-                              </span>
+                              </small>
                             </div>
                           )}
                         </div>
-                        <div className="ps-5 w-75">
-                          <p className="w-75 m-0 fs-5">
-                            {data.orderedItems
-                              .map((item) => item.itemName)
-                              .join(", ")
-                              .slice(0, 50) + "..."}
+
+                        <div className="d-flex order-name-price-flex ps-3">
+                          <p className="m-0">
+                            {concatenateOrdersName(data.orderedItems)}
                           </p>
-                        </div>
-                        <div>
-                          <div className="fs-5">
-                            {data.orderedItems &&
-                              ` ₹ ${calculateTotalOrderValue(
-                                data.orderedItems
-                              )}`}
+
+                          <div className="body-price-div">
+                            <p className="m-0">
+                              {data.orderedItems &&
+                                ` ₹ ${calculateTotalOrderValue(
+                                  data.orderedItems
+                                )}`}
+                            </p>
                           </div>
                         </div>
                       </div>

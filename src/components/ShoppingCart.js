@@ -59,20 +59,23 @@ const ShoppingCart = () => {
   return (
     <>
       <Header />
-      <main className="container mt-5">
+      <main className="container py-5">
         <div>
           <h4 className="mb-4">Shopping Cart</h4>
           {error && <p>Failed to get Cart items</p>}
           {status === "loading" && cartItems.length < 1 && <p>Loading...</p>}
           {cartItems.length >= 1 && (
             <div className="row">
-              <div className="col-md-8 pe-5">
+              <div className="col-md-8">
                 <div className="row">
                   {cartItems &&
                     cartItems.map((item) => (
-                      <div key={item.item._id} className="col-md-12">
+                      <div
+                        key={item.item._id}
+                        className="col-md-12 col-sm-12 col-12"
+                      >
                         <div className="row">
-                          <div className="col-md-3">
+                          <div className="col-lg-2 col-md-3 col-sm-3 col-3 align-self-center">
                             <div>
                               <img
                                 src={item.item.imagesUrl.mainImage}
@@ -81,7 +84,7 @@ const ShoppingCart = () => {
                               />
                             </div>
                           </div>
-                          <div className="col-md-8">
+                          <div className="col-md-8 col-sm-8 col-8">
                             <div>
                               <Link
                                 className="item-link-navigate"
@@ -179,11 +182,11 @@ const ShoppingCart = () => {
                     ))}
                 </div>
               </div>
-              <div className="col-md-4">
+              <div className="col-md-4 col-sm-4 mt-2">
                 {<CartTotalSummary />}
 
                 <button
-                  className="btn btn-warning col-md-12"
+                  className="btn btn-warning col-md-12 col-sm-12 col-12"
                   onClick={handleCartCheckout}
                 >
                   Proceed To Checkout

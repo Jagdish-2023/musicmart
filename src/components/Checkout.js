@@ -104,7 +104,7 @@ const Checkout = () => {
         </div>
       </header>
 
-      <main className="container mt-5">
+      <main className="container py-5">
         <div>
           {error && <p>An error occured</p>}
           {status === "loading" &&
@@ -191,7 +191,7 @@ const Checkout = () => {
                 <section>
                   {<CartTotalSummary />}
                   <button
-                    className="btn btn-warning col-md-12"
+                    className="btn btn-warning col-md-12 col-sm-12 col-12"
                     onClick={handlePlaceOrder}
                   >
                     Place Order

@@ -1,3 +1,4 @@
+import "../css/productDetails.css";
 import { useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -59,8 +60,8 @@ const ProductDetails = () => {
                     />
                   </div>
                   <div className="py-3">
-                    <div className="d-flex justify-content-center gap-2 px-4">
-                      <div className="col-md-6">
+                    <div className="d-flex action-btn-flex gap-2">
+                      <div className="action-btn">
                         {!productDetails.isFavourite && (
                           <button
                             className="btn mx-1 w-100"
@@ -85,7 +86,7 @@ const ProductDetails = () => {
                           </button>
                         )}
                       </div>
-                      <div className="col-md-6">
+                      <div className="action-btn">
                         {!productDetails.isInCart && (
                           <button
                             className="btn btn-warning mx-1 w-100"
@@ -114,7 +115,7 @@ const ProductDetails = () => {
                     {productDetails.rating}{" "}
                     <i className="bi bi-star-fill text-warning"></i>
                   </div>
-                  {/* price div */}
+
                   <div className="py-3">
                     <div className="d-flex justify-content-start align-items-center">
                       <div>
@@ -141,22 +142,23 @@ const ProductDetails = () => {
                     </div>
                   </div>
 
-                  {/* policy */}
                   <div className="py-2">
                     <hr />
-                    <div className="d-flex justify-content-start gap-5">
+                    <div className="d-flex justify-content-start gap-4">
                       <div>
                         <p className="text-center m-0">
                           <i className="bi bi-calendar-check fs-4"></i>
                         </p>
-                        <p>{productDetails.replacePolicy} days replacement</p>
+                        <p className="text-center">
+                          {productDetails.replacePolicy} days replacement
+                        </p>
                       </div>
                       {productDetails.isCOD && (
                         <div>
                           <p className="text-center m-0">
                             <i className="bi bi-cash-coin fs-4"></i>
                           </p>
-                          <p>Pay on Delivery</p>
+                          <p className="text-center">Pay on Delivery</p>
                         </div>
                       )}
                       {productDetails.isFreeDelivery && (
@@ -164,19 +166,19 @@ const ProductDetails = () => {
                           <p className="text-center m-0">
                             <i className="bi bi-truck fs-4"></i>
                           </p>
-                          <p>Free Delivery</p>
+                          <p className="text-center">Free Delivery</p>
                         </div>
                       )}
                       <div className="">
                         <p className="text-center m-0">
                           <i className="bi bi-credit-card fs-4"></i>
                         </p>
-                        <p>Secure Payment</p>
+                        <p className="text-center">Secure Payment</p>
                       </div>
                     </div>
                     <hr />
                   </div>
-                  {/* description */}
+
                   <div>
                     <p>
                       <strong>Description:</strong>
