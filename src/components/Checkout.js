@@ -200,7 +200,8 @@ const Checkout = () => {
               </div>
             </div>
           ) : (
-            !setPlaceOrder && <p>Please add an item to cart first.</p>
+            status === "success" &&
+            cartItems?.length === 0 && <p>Please add an item to cart first.</p>
           )}
 
           {placeOrder && (

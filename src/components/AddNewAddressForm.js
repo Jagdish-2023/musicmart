@@ -49,19 +49,32 @@ const AddNewAddressForm = ({ editAddress, resetRendering }) => {
   const formSubmitHandler = (e) => {
     e.preventDefault();
 
-    if (newAddress.mobileNumber.toString().length !== 10) {
+    const isValidNumber = /^[0-9]{10}$/.test(newAddress.mobileNumber);
+    const isValidPincode = /^[0-9]{6}$/.test(newAddress.pincode);
+
+    if (!isValidNumber && newAddress.mobileNumber.length === 10) {
+      alert("Mobile number should consist of only numbers");
+    }
+
+    if (newAddress.mobileNumber.length !== 10) {
       alert("Mobile number must be 10 digits");
       return;
     }
 
-    if (newAddress.pincode.toString().length !== 6) {
+    if (!isValidPincode && newAddress.pincode.length === 6) {
+      alert("Pincode should consist of only numbers");
+    }
+
+    if (newAddress.pincode.length !== 6) {
       alert("Pincode must be 6 digits");
       return;
     }
 
     if (
-      newAddress.mobileNumber.toString().length === 10 &&
-      newAddress.pincode.toString().length === 6
+      newAddress.mobileNumber.length === 10 &&
+      isValidNumber &&
+      newAddress.pincode.toString().length === 6 &&
+      isValidPincode
     ) {
       const previousSelectedAddress = shipAddresses.find(
         (address) => address.isDeliver === true
