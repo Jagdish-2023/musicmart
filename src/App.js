@@ -26,8 +26,8 @@ function App() {
       <main className="container mt-5">
         <section>
           <img
-            // src="https://placehold.co/1400x600?text=MusicMart"
-            src="https://yamaha.ndcdn.in/media/wysiwyg/banner_desk_27_01.jpg"
+            // src="https://yamaha.ndcdn.in/media/wysiwyg/banner_desk_27_01.jpg"
+            src="/images/hero.png"
             alt="brand"
             className="img-fluid"
           />
@@ -87,7 +87,7 @@ function App() {
                 onClick={() => handleSelectedCategory("Drum")}
               >
                 <img
-                  src="https://kadence.in/wp-content/uploads/2023/12/D1.jpg"
+                  src="	https://m.media-amazon.com/images/I/712I6mIUhbL.jpg"
                   alt="drum"
                   className="card-img opacity-75"
                 />
