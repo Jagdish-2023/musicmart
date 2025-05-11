@@ -1,184 +1,389 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+function getAuthHeaders() {
+  const token = localStorage.getItem("musicmartToken");
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  if (!token) {
+    return headers;
+  }
+
+  headers.Authorization = `Bearer ${token}`;
+  return headers;
+}
+
+function removeStorageToken() {
+  localStorage.removeItem("musicmartToken");
+}
+
+export const registerNewUser = createAsyncThunk(
+  "auth/signup",
+  async (userInfo) => {
+    try {
+      const response = await axios.post(
+        "https://musicmart-backend.vercel.app/auth/register",
+        userInfo
+      );
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  }
+);
+
+export const loginUser = createAsyncThunk(
+  "auth/signin",
+  async (credentials) => {
+    try {
+      const response = await axios.post(
+        "https://musicmart-backend.vercel.app/auth/login",
+        credentials
+      );
+
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message);
+    }
+  }
+);
+
 export const fetchProductsAsync = createAsyncThunk(
   "products/fetch",
   async () => {
-    const response = await axios.get(
-      "https://musicmart-backend.vercel.app/products"
-    );
+    try {
+      const response = await axios.get(
+        "https://musicmart-backend.vercel.app/products"
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
 
-    return response.data;
+      throw new Error("Failed to get Products");
+    }
   }
 );
 
 export const updateFavouriteItem = createAsyncThunk(
   "product/favourite",
-  async ({ productId, isFavourite }) => {
-    const response = await axios.post(
-      `https://musicmart-backend.vercel.app/product/favourite/${productId}`,
-      { isFavourite }
-    );
+  async (productId) => {
+    try {
+      const response = await axios.post(
+        `https://musicmart-backend.vercel.app/product/favourite/${productId}`,
+        {},
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
 
-    return response.data;
+      throw new Error("Failed to add in Wishlist");
+    }
   }
 );
 
 export const fetchFavouriteItems = createAsyncThunk(
   "products/favourite",
   async () => {
-    const response = await axios.get(
-      "https://musicmart-backend.vercel.app/favouriteItems"
-    );
+    try {
+      const response = await axios.get(
+        "https://musicmart-backend.vercel.app/favouriteItems",
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
 
-    return response.data;
+      throw new Error("Failed to get Wishlist");
+    }
   }
 );
 
 export const updateCartList = createAsyncThunk(
   "product/cart",
   async ({ productId, isInCart }) => {
-    const response = await axios.post(
-      `https://musicmart-backend.vercel.app/product/cart/${productId}`,
-      { isInCart }
-    );
-    return response.data;
+    try {
+      const response = await axios.post(
+        `https://musicmart-backend.vercel.app/product/cart/${productId}`,
+        { isInCart },
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to update Cart");
+    }
   }
 );
 
 export const fetchCartItems = createAsyncThunk("products/cart", async () => {
-  const response = await axios.get(
-    "https://musicmart-backend.vercel.app/cartItems"
-  );
-  return response.data;
+  try {
+    const response = await axios.get(
+      "https://musicmart-backend.vercel.app/cartItems",
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response.status === 401) {
+      throw new Error("401");
+    }
+
+    throw new Error("Failed to get Cart items");
+  }
 });
 
 export const fetchProductDetails = createAsyncThunk(
   "product/fetch",
   async (productId) => {
-    const response = await axios.get(
-      `https://musicmart-backend.vercel.app/products/${productId}`
-    );
-    return response.data;
+    try {
+      const response = await axios.get(
+        `https://musicmart-backend.vercel.app/products/${productId}`
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to get Product details");
+    }
   }
 );
 
 export const updateCartQuantity = createAsyncThunk(
   "product/cartQuantity",
   async ({ productId, cartQuantity }) => {
-    const response = await axios.post(
-      "https://musicmart-backend.vercel.app/product/cart_quantity",
-      { productId, cartQuantity }
-    );
-    return response.data;
+    try {
+      const response = await axios.post(
+        "https://musicmart-backend.vercel.app/product/cart_quantity",
+        { productId, cartQuantity },
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to update Cart");
+    }
   }
 );
 
 export const fetchShippingAddresses = createAsyncThunk(
   "addresses/fetch",
   async () => {
-    const response = await axios.get(
-      "https://musicmart-backend.vercel.app/shipping_addresses"
-    );
+    try {
+      const response = await axios.get(
+        "https://musicmart-backend.vercel.app/shipping_addresses",
+        { headers: getAuthHeaders() }
+      );
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to get Addresses");
+    }
   }
 );
 
 export const addNewAddress = createAsyncThunk(
   "address/add-new",
   async (address) => {
-    const response = await axios.post(
-      "https://musicmart-backend.vercel.app/add_ship_address",
-      address
-    );
+    try {
+      const response = await axios.post(
+        "https://musicmart-backend.vercel.app/add_ship_address",
+        address,
+        { headers: getAuthHeaders() }
+      );
 
-    return response.data;
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to Add new Address");
+    }
   }
 );
 
 export const updateDeliveryAddress = createAsyncThunk(
   "address/update",
   async (updatedAddress) => {
-    const response = await axios.post(
-      "https://musicmart-backend.vercel.app/update_address_deliver",
-      updatedAddress
-    );
-    return response.data;
+    try {
+      const response = await axios.post(
+        "https://musicmart-backend.vercel.app/update_address_deliver",
+        updatedAddress,
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to update Address");
+    }
   }
 );
 
 export const updateAddressDetails = createAsyncThunk(
   "update/address-details",
   async ({ dataToUpdate, addressId }) => {
-    const response = await axios.post(
-      "https://musicmart-backend.vercel.app/update_address_details",
-      { dataToUpdate, addressId }
-    );
-    return response.data;
+    try {
+      const response = await axios.post(
+        "https://musicmart-backend.vercel.app/update_address_details",
+        { dataToUpdate, addressId },
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to update Address");
+    }
   }
 );
 
 export const deleteAddress = createAsyncThunk(
   "address/delete",
   async (addressId) => {
-    const response = await axios.delete(
-      `https://musicmart-backend.vercel.app/delete_address/${addressId}`
-    );
-    return response.data;
+    try {
+      const response = await axios.delete(
+        `https://musicmart-backend.vercel.app/delete_address/${addressId}`,
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to Delete Address");
+    }
   }
 );
 
 export const fetchUserProfile = createAsyncThunk("profile/fetch", async () => {
-  const response = await axios.get(
-    "https://musicmart-backend.vercel.app/user_profile_info"
-  );
-  return response.data;
+  try {
+    const response = await axios.get(
+      "https://musicmart-backend.vercel.app/user_profile_info",
+      { headers: getAuthHeaders() }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response.status === 401) {
+      throw new Error("401");
+    }
+
+    throw new Error("Failed to get Profile");
+  }
 });
 
 export const updateUserProfile = createAsyncThunk(
   "profile/update",
   async (data) => {
     const { profileId, dataToUpdate } = data;
-    const response = await axios.post(
-      "https://musicmart-backend.vercel.app/update_user_profile",
-      { profileId, dataToUpdate }
-    );
-    return response.data;
+    try {
+      const response = await axios.post(
+        "https://musicmart-backend.vercel.app/update_user_profile",
+        { profileId, dataToUpdate },
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to update Profile");
+    }
   }
 );
 
 export const fetchAllOrders = createAsyncThunk("orders/fetch", async () => {
-  const response = await axios.get(
-    "https://musicmart-backend.vercel.app/order_items"
-  );
-  return response.data;
+  try {
+    const response = await axios.get(
+      "https://musicmart-backend.vercel.app/order_items",
+      {
+        headers: getAuthHeaders(),
+      }
+    );
+    return response.data;
+  } catch (error) {
+    if (error.response.status === 401) {
+      throw new Error("401");
+    }
+
+    throw new Error("Failed to fetch Ordered items");
+  }
 });
 
 export const addCartItemsToOrders = createAsyncThunk(
   "products/ordered",
   async ({ orderedItems, deliveryAddress }) => {
-    const response = await axios.post(
-      "https://musicmart-backend.vercel.app/move_cart_to_order",
-      { orderedItems, deliveryAddress }
-    );
-    return response.data;
+    try {
+      const response = await axios.post(
+        "https://musicmart-backend.vercel.app/move_cart_to_order",
+        { orderedItems, deliveryAddress },
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to place Order");
+    }
   }
 );
 
 export const fetchOrderDetails = createAsyncThunk(
   "order-details/fetch",
   async (orderId) => {
-    const response = await axios.get(
-      `https://musicmart-backend.vercel.app/order-details/${orderId}`
-    );
-    return response.data;
+    try {
+      const response = await axios.get(
+        `https://musicmart-backend.vercel.app/order-details/${orderId}`,
+        { headers: getAuthHeaders() }
+      );
+      return response.data;
+    } catch (error) {
+      if (error.response.status === 401) {
+        throw new Error("401");
+      }
+
+      throw new Error("Failed to get Order details");
+    }
   }
 );
 
 export const productsSlice = createSlice({
   name: "products",
   initialState: {
+    storageToken: localStorage.getItem("musicmartToken"),
     products: [],
     cartItems: [],
     favouriteItems: [],
@@ -188,6 +393,7 @@ export const productsSlice = createSlice({
     profileInfo: null,
     orderDetails: null,
     searchInputText: "",
+    isRegistered: false,
     status: "idle",
     error: null,
   },
@@ -195,8 +401,51 @@ export const productsSlice = createSlice({
     saveSearchInput: (state, action) => {
       state.searchInputText = action.payload.toLowerCase();
     },
+    toggleSignup: (state) => {
+      state.isRegistered = false;
+    },
+    handleLogout: (state) => {
+      localStorage.removeItem("musicmartToken");
+      state.storageToken = null;
+      state.favouriteItems = [];
+      state.cartItems = [];
+      state.shipAddresses = [];
+      state.allOrders = [];
+      state.profileInfo = null;
+      state.orderDetails = null;
+    },
   },
   extraReducers: (builder) => {
+    builder.addCase(registerNewUser.pending, (state) => {
+      state.status = "loading";
+      state.error = null;
+    });
+    builder.addCase(registerNewUser.fulfilled, (state) => {
+      state.status = "success";
+      state.error = null;
+      state.isRegistered = true;
+    });
+    builder.addCase(registerNewUser.rejected, (state) => {
+      state.status = "error";
+      state.error = "Failed to create your account";
+    });
+
+    builder.addCase(loginUser.pending, (state) => {
+      state.status = "loading";
+      state.error = null;
+    });
+    builder.addCase(loginUser.fulfilled, (state, action) => {
+      state.status = "success";
+      state.error = null;
+      state.storageToken = action.payload.token;
+      localStorage.setItem("musicmartToken", action.payload.token);
+    });
+    builder.addCase(loginUser.rejected, (state, action) => {
+      state.status = "error";
+      state.error = action.error.message;
+    });
+
+    //products
     builder.addCase(fetchProductsAsync.pending, (state) => {
       state.status = "loading";
     });
@@ -206,7 +455,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(fetchProductsAsync.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     //favourites
@@ -219,42 +474,42 @@ export const productsSlice = createSlice({
     });
     builder.addCase(fetchFavouriteItems.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(updateFavouriteItem.pending, (state) => {
       state.status = "loading";
     });
     builder.addCase(updateFavouriteItem.fulfilled, (state, action) => {
-      const updatedItem = action.payload?.updatedItem;
-      const newFavouriteItem = action.payload?.newFavouriteItem;
+      const { savedFavouriteItem, removedFavouriteItem } = action.payload;
 
-      if (newFavouriteItem) {
-        state.favouriteItems.push(newFavouriteItem);
-      } else {
+      if (savedFavouriteItem) {
+        state.favouriteItems.push(savedFavouriteItem);
+      }
+
+      if (removedFavouriteItem) {
         state.favouriteItems = state.favouriteItems.filter(
-          (product) => product.item._id !== updatedItem._id
+          (item) => item.item._id !== removedFavouriteItem.item
         );
-      }
-
-      if (state.products.length > 0) {
-        const itemIndex = state.products.findIndex(
-          (product) => product._id === updatedItem._id
-        );
-        if (itemIndex >= 0) {
-          state.products[itemIndex].isFavourite = updatedItem.isFavourite;
-        }
-      }
-
-      if (state.productDetails?._id === updatedItem._id) {
-        state.productDetails = updatedItem;
       }
 
       state.status = "success";
     });
     builder.addCase(updateFavouriteItem.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     //cart
@@ -267,44 +522,29 @@ export const productsSlice = createSlice({
     });
     builder.addCase(fetchCartItems.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(updateCartList.pending, (state) => {
       state.status = "loading";
     });
     builder.addCase(updateCartList.fulfilled, (state, action) => {
-      const updatedItemId = action.payload?.updatedItem._id;
-      const newCartItem = action.payload?.newCartItem;
+      const { savedCartItem, removedCartItem } = action.payload;
 
-      if (newCartItem) {
-        const itemMovedToCart = state.favouriteItems.find(
-          (product) => product.item._id === newCartItem?.item?._id
-        );
+      if (savedCartItem) {
+        state.cartItems.push(savedCartItem);
+      }
 
-        if (itemMovedToCart) {
-          itemMovedToCart.item.isInCart = true;
-        }
-        state.cartItems.push(newCartItem);
-      } else {
+      if (removedCartItem) {
         state.cartItems = state.cartItems.filter(
-          (product) => product.item._id !== updatedItemId
+          (item) => item.item._id !== removedCartItem.item
         );
-      }
-
-      if (state.products.length > 0) {
-        const itemIndex = state.products.findIndex(
-          (product) => product._id === updatedItemId
-        );
-
-        if (itemIndex >= 0) {
-          state.products[itemIndex].isInCart =
-            action.payload.updatedItem.isInCart;
-        }
-      }
-
-      if (state.productDetails?._id === updatedItemId) {
-        state.productDetails = action.payload.updatedItem;
       }
 
       state.status = "success";
@@ -329,7 +569,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(updateCartQuantity.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     //product data
@@ -342,7 +588,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(fetchProductDetails.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     //address
@@ -355,7 +607,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(fetchShippingAddresses.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(addNewAddress.pending, (state) => {
@@ -364,7 +622,11 @@ export const productsSlice = createSlice({
     builder.addCase(addNewAddress.fulfilled, (state, action) => {
       state.status = "success";
       const { savedAddress, updatedAddress } = action.payload;
-      state.shipAddresses.push(savedAddress);
+      if (savedAddress) {
+        state.shipAddresses.push(savedAddress);
+
+        return;
+      }
       const addressToUpdate = state.shipAddresses.find(
         (address) => address._id === updatedAddress._id
       );
@@ -374,7 +636,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(addNewAddress.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(updateDeliveryAddress.pending, (state) => {
@@ -399,7 +667,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(updateDeliveryAddress.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(updateAddressDetails.pending, (state) => {
@@ -420,7 +694,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(updateAddressDetails.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(deleteAddress.pending, (state) => {
@@ -434,7 +714,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(deleteAddress.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     //profile
@@ -442,12 +728,18 @@ export const productsSlice = createSlice({
       state.status = "loading";
     });
     builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
-      state.profileInfo = action.payload[0];
+      state.profileInfo = action.payload;
       state.status = "success";
     });
     builder.addCase(fetchUserProfile.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(updateUserProfile.pending, (state) => {
@@ -459,7 +751,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(updateUserProfile.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(addCartItemsToOrders.pending, (state) => {
@@ -470,7 +768,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(addCartItemsToOrders.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(fetchAllOrders.pending, (state) => {
@@ -482,7 +786,13 @@ export const productsSlice = createSlice({
     });
     builder.addCase(fetchAllOrders.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
 
     builder.addCase(fetchOrderDetails.pending, (state) => {
@@ -494,11 +804,18 @@ export const productsSlice = createSlice({
     });
     builder.addCase(fetchOrderDetails.rejected, (state, action) => {
       state.status = "error";
-      state.error = action.error.message;
+      if (action.error.message === "401") {
+        removeStorageToken();
+        state.storageToken = null;
+        state.error = "Unauthorized";
+      } else {
+        state.error = action.error.message;
+      }
     });
   },
 });
 
-export const { saveSearchInput } = productsSlice.actions;
+export const { saveSearchInput, toggleSignup, handleLogout } =
+  productsSlice.actions;
 
 export default productsSlice.reducer;

@@ -13,7 +13,7 @@ import CartTotalSummary from "./CartTotalSummary";
 const Checkout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { cartItems, shipAddresses, status, error } = useSelector(
+  const { cartItems, shipAddresses, status, error, storageToken } = useSelector(
     (state) => state.products
   );
 
@@ -89,9 +89,13 @@ const Checkout = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchShippingAddresses());
-    dispatch(fetchCartItems());
-  }, [dispatch]);
+    if (!storageToken) {
+      navigate("/login");
+    } else {
+      dispatch(fetchShippingAddresses());
+      dispatch(fetchCartItems());
+    }
+  }, [dispatch, navigate, storageToken]);
   return (
     <>
       <header className="bg-light">

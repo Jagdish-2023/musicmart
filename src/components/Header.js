@@ -6,12 +6,15 @@ import {
   fetchFavouriteItems,
   fetchCartItems,
   saveSearchInput,
+  handleLogout,
 } from "../features/products/productsSlice";
 
 const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { favouriteItems, cartItems } = useSelector((state) => state.products);
+  const { favouriteItems, cartItems, storageToken } = useSelector(
+    (state) => state.products
+  );
 
   const [searchInput, setSearchInput] = useState("");
 
@@ -29,10 +32,17 @@ const Header = () => {
     navigate("/products");
   };
 
+  const logoutHandler = () => {
+    dispatch(handleLogout());
+    navigate("/");
+  };
+
   useEffect(() => {
-    dispatch(fetchFavouriteItems());
-    dispatch(fetchCartItems());
-  }, [dispatch]);
+    if (storageToken) {
+      dispatch(fetchFavouriteItems());
+      dispatch(fetchCartItems());
+    }
+  }, [dispatch, storageToken]);
   return (
     <header className="bg-light">
       <div className="container">
@@ -91,21 +101,48 @@ const Header = () => {
                 <i className="bi bi-person fs-3"></i>
               </NavLink>
               <ul className="dropdown-menu">
-                <li>
-                  <NavLink className="dropdown-item" to="/my-profile">
-                    Profile
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink className="dropdown-item" to="/my-orders">
-                    Orders
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink className="dropdown-item" to="/my-addresses">
-                    My addresses
-                  </NavLink>
-                </li>
+                {storageToken && (
+                  <>
+                    {" "}
+                    <li>
+                      <NavLink className="dropdown-item" to="/my-profile">
+                        Profile
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="dropdown-item" to="/my-orders">
+                        Orders
+                      </NavLink>
+                    </li>
+                    <li>
+                      <NavLink className="dropdown-item" to="/my-addresses">
+                        My addresses
+                      </NavLink>
+                    </li>
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <li className="text-center">
+                      <span
+                        className="text-danger"
+                        style={{ cursor: "pointer" }}
+                        onClick={logoutHandler}
+                      >
+                        Logout
+                      </span>
+                    </li>
+                  </>
+                )}
+
+                {!storageToken && (
+                  <>
+                    <li>
+                      <NavLink to={"/login"} className="dropdown-item">
+                        Sign In
+                      </NavLink>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
 

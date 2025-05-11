@@ -27,7 +27,7 @@ const ShoppingCart = () => {
       (product) => product.item._id === productId
     );
     if (!isItemInWishlist) {
-      dispatch(updateFavouriteItem({ productId, isFavourite }));
+      dispatch(updateFavouriteItem(productId, isFavourite));
     }
   };
 

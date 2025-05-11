@@ -8,7 +8,9 @@ import { fetchAllOrders } from "../features/products/productsSlice";
 const MyOrders = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { status, error, allOrders } = useSelector((state) => state.products);
+  const { status, error, allOrders, storageToken } = useSelector(
+    (state) => state.products
+  );
 
   const calculateTotalOrderValue = (items) => {
     const totalValue = items?.reduce(
@@ -32,8 +34,10 @@ const MyOrders = () => {
     navigate(`/my-orders/${orderId}`);
   };
   useEffect(() => {
-    dispatch(fetchAllOrders());
-  }, [dispatch]);
+    if (storageToken) {
+      dispatch(fetchAllOrders());
+    }
+  }, [dispatch, navigate, storageToken]);
   return (
     <>
       <Header />

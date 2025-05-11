@@ -7,6 +7,7 @@ import FilterForm from "../filter/FilterForm";
 
 const Products = () => {
   const dispatch = useDispatch();
+
   const { products, status, error } = useSelector((state) => state.products);
 
   useEffect(() => {

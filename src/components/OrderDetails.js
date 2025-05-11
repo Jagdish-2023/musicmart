@@ -1,14 +1,13 @@
 import Header from "./Header";
-import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { fetchOrderDetails } from "../features/products/productsSlice";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const OrderDetails = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { status, error, orderDetails } = useSelector(
+  const { status, error, orderDetails, storageToken } = useSelector(
     (state) => state.products
   );
   const { orderId } = useParams();
@@ -25,8 +24,10 @@ const OrderDetails = () => {
   } = orderDetails?.deliveryAddress || {};
 
   useEffect(() => {
-    dispatch(fetchOrderDetails(orderId));
-  }, [dispatch, orderId]);
+    if (storageToken) {
+      dispatch(fetchOrderDetails(orderId));
+    }
+  }, [dispatch, navigate, orderId, storageToken]);
   return (
     <>
       <Header />

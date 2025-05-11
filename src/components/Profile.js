@@ -5,10 +5,14 @@ import {
   fetchUserProfile,
   updateUserProfile,
 } from "../features/products/productsSlice";
+import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { status, error, profileInfo } = useSelector((state) => state.products);
+  const { status, error, profileInfo, storageToken } = useSelector(
+    (state) => state.products
+  );
 
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [fullName, setFullName] = useState("");
@@ -36,13 +40,17 @@ const Profile = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchUserProfile());
-  }, [dispatch]);
+    if (!storageToken) {
+      navigate("/login");
+    } else {
+      dispatch(fetchUserProfile());
+    }
+  }, [dispatch, navigate, storageToken]);
   return (
     <>
       <Header />
       <main className="container py-5">
-        {error && <p>Error occured while fetching the Profile</p>}
+        {error && <p>{error}</p>}
         {status === "loading" && <p>Loading...</p>}
         {!isEditProfile && status === "success" && profileInfo && (
           <div>

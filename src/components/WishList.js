@@ -12,12 +12,24 @@ import {
 const WishList = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { favouriteItems, status, error } = useSelector(
+  const { favouriteItems, status, error, cartItems } = useSelector(
     (state) => state.products
   );
 
-  const handleTrashIcon = (productId, isFavourite) => {
-    dispatch(updateFavouriteItem({ productId, isFavourite }));
+  const updatedItems = favouriteItems.map((product) => {
+    const findInCart = cartItems.find(
+      (item) => item.item._id === product.item._id
+    );
+
+    if (findInCart) {
+      return { ...product, isInCart: true };
+    }
+
+    return { ...product, isInCart: false };
+  });
+
+  const handleTrashIcon = (productId) => {
+    dispatch(updateFavouriteItem(productId));
   };
 
   const handleMoveToCartBtn = (productId, isInCart) => {
@@ -33,16 +45,14 @@ const WishList = () => {
       <Header />
       <main className="container mt-5">
         <div>
-          <h4>My Wishlist ({favouriteItems.length})</h4>
+          <h4>My Wishlist ({updatedItems.length})</h4>
 
           {error && <p>Failed to fetch Wishlist.</p>}
-          {status === "loading" && favouriteItems.length < 1 && (
-            <p>Loading...</p>
-          )}
+          {status === "loading" && updatedItems.length < 1 && <p>Loading...</p>}
 
-          {favouriteItems.length >= 1 && (
+          {updatedItems.length >= 1 && (
             <div>
-              {favouriteItems.map((item) => (
+              {updatedItems.map((item) => (
                 <div key={item._id} className="mt-5">
                   <div className="d-flex ustify-content-start align-items-center">
                     <div
@@ -103,7 +113,7 @@ const WishList = () => {
                               className="bi bi-trash trash-icon"
                               style={{ cursor: "pointer" }}
                               onClick={(e) => {
-                                handleTrashIcon(item.item._id, false);
+                                handleTrashIcon(item.item._id);
                               }}
                             ></i>
                             <button className="remove-item-btn btn btn-sm btn-danger ms-3">
@@ -112,7 +122,7 @@ const WishList = () => {
                           </div>
 
                           <div className="text-center">
-                            {!item.item.isInCart && (
+                            {!item.isInCart && (
                               <div className="">
                                 <button
                                   className="btn btn-warning move-cart-btn"
@@ -128,7 +138,7 @@ const WishList = () => {
                               </div>
                             )}
 
-                            {item.item.isInCart && (
+                            {item.isInCart && (
                               <div className="">
                                 <div>
                                   <i className="bi bi-check-circle-fill text-success"></i>

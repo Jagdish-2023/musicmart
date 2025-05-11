@@ -15,11 +15,16 @@ import Profile from "./components/Profile";
 import MyOrders from "./components/MyOrders";
 import OrderDetails from "./components/OrderDetails";
 import Addresses from "./components/Addresses";
+import LoginForm from "./components/LoginForm";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+  },
+  {
+    path: "/login",
+    element: <LoginForm />,
   },
   {
     path: "/products",

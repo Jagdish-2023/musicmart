@@ -7,20 +7,45 @@ import {
 } from "../features/products/productsSlice";
 
 const ProductsList = ({ products }) => {
+  const { filteredCategory, filteredPrice, filteredRating, filteredSortBy } =
+    useSelector((state) => state.filters);
+  const { searchInputText, favouriteItems, cartItems, storageToken } =
+    useSelector((state) => state.products);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [renderProducts, setRenderProducts] = useState(products);
 
-  const { filteredCategory, filteredPrice, filteredRating, filteredSortBy } =
-    useSelector((state) => state.filters);
-  const { searchInputText } = useSelector((state) => state.products);
+  const updatedProducts = renderProducts.map((product) => {
+    const findFavouriteItem = favouriteItems.find(
+      (item) => item.item._id === product._id
+    );
+    const findCartItem = cartItems.find(
+      (item) => item.item._id === product._id
+    );
 
-  const handleHeartIcon = (productId, isFavourite) => {
-    dispatch(updateFavouriteItem({ productId, isFavourite }));
+    if (findFavouriteItem && findCartItem) {
+      return { ...product, isFavourite: true, isInCart: true };
+    }
+    if (findFavouriteItem) return { ...product, isFavourite: true };
+    if (findCartItem) return { ...product, isInCart: true };
+
+    return product;
+  });
+
+  const handleHeartIcon = (productId) => {
+    if (!storageToken) {
+      navigate("/login");
+    } else {
+      dispatch(updateFavouriteItem(productId));
+    }
   };
 
-  const handleAddCartBtn = (productId, isInCart) => {
-    dispatch(updateCartList({ productId, isInCart }));
+  const handleAddCartBtn = (productId) => {
+    if (!storageToken) {
+      navigate("/login");
+    } else {
+      dispatch(updateCartList({ productId }));
+    }
   };
 
   const handleProductNavigate = (productId) => {
@@ -89,7 +114,7 @@ const ProductsList = ({ products }) => {
         )}
 
         <div className="row mt-3">
-          {renderProducts.map((item) => (
+          {renderProducts.map((item, index) => (
             <div key={item._id} className="col-md-3 mb-4">
               <div
                 style={{ cursor: "pointer" }}
@@ -113,21 +138,20 @@ const ProductsList = ({ products }) => {
                   >
                     <i
                       className={
-                        item.isFavourite
+                        updatedProducts[index].isFavourite
                           ? "bi bi-heart-fill fs-5 ms-auto"
                           : "bi bi-heart fs-5 ms-auto"
                       }
                       style={{
                         cursor: "pointer",
-                        color: item.isFavourite ? "red" : "black",
+                        color: updatedProducts[index].isFavourite
+                          ? "red"
+                          : "black",
                         marginBottom: "12rem",
                       }}
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleHeartIcon(
-                          item._id,
-                          item.isFavourite ? false : true
-                        );
+                        handleHeartIcon(item._id);
                       }}
                     ></i>
                   </div>
@@ -154,7 +178,7 @@ const ProductsList = ({ products }) => {
                     </span>
                   </div>
                   <div className="d-grid gap-2 mt-3">
-                    {item.isInCart && (
+                    {updatedProducts[index].isInCart && (
                       <button
                         className="btn btn-secondary text-light"
                         onClick={(e) => {
@@ -165,12 +189,12 @@ const ProductsList = ({ products }) => {
                         Go to cart
                       </button>
                     )}
-                    {!item.isInCart && (
+                    {!updatedProducts[index].isInCart && (
                       <button
                         className="btn btn-warning"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleAddCartBtn(item._id, true);
+                          handleAddCartBtn(item._id);
                         }}
                       >
                         Add to cart

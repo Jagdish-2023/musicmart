@@ -25,12 +25,7 @@ function App() {
       <Header />
       <main className="container mt-5">
         <section>
-          <img
-            // src="https://yamaha.ndcdn.in/media/wysiwyg/banner_desk_27_01.jpg"
-            src="/images/hero.png"
-            alt="brand"
-            className="img-fluid"
-          />
+          <img src="/images/hero.png" alt="brand" className="img-fluid" />
         </section>
 
         <section className="py-5">
@@ -127,6 +122,7 @@ function App() {
           </div>
         </section>
       </main>
+      )
     </>
   );
 }
