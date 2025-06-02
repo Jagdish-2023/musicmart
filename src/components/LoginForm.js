@@ -7,6 +7,7 @@ import {
   loginUser,
 } from "../features/products/productsSlice";
 import { useNavigate } from "react-router-dom";
+import Spinner from "./Spinner";
 
 const LoginForm = () => {
   const navigate = useNavigate();
@@ -214,13 +215,17 @@ const LoginForm = () => {
             )}
 
             <div className="d-flex gap-2 flex-column mt-3">
-              <button className="btn btn-primary col-12">
+              <button
+                className="btn btn-primary col-12"
+                disabled={status === "loading"}
+              >
                 {isSignUp ? "Sign Up" : "Sign In"}
               </button>
               <button
                 type="button"
                 className="btn btn-outline-primary col-12"
                 onClick={handleActionToggle}
+                disabled={status === "loading"}
               >
                 {isSignUp ? "Sign In" : "Sign Up"}
               </button>
@@ -228,9 +233,9 @@ const LoginForm = () => {
           </form>
         </div>
         {status === "loading" && (
-          <p className="mb-0 mt-2 text-center">
-            <small>Please wait...</small>
-          </p>
+          <div className="mt-4 text-center">
+            <Spinner />
+          </div>
         )}
         {error && <p className="text-danger mb-0 mt-2 text-center">{error}</p>}
         {isRegistered && isSignUp && (

@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import AddNewAddressForm from "./AddNewAddressForm";
+import AddNewAddressForm from "../AddNewAddressForm";
 import {
   fetchShippingAddresses,
   updateDeliveryAddress,
   addCartItemsToOrders,
   fetchCartItems,
-} from "../features/products/productsSlice";
-import CartTotalSummary from "./CartTotalSummary";
+} from "../../features/products/productsSlice";
+import CartTotalSummary from "../CartTotalSummary";
+import Spinner from "../Spinner";
 
 const Checkout = () => {
   const dispatch = useDispatch();
@@ -113,7 +114,7 @@ const Checkout = () => {
           {error && <p>An error occured</p>}
           {status === "loading" &&
             cartItems.length < 1 &&
-            shipAddresses.length < 1 && <p>Loading...</p>}
+            shipAddresses.length < 1 && <Spinner />}
           {!placeOrder && cartItems.length >= 1 ? (
             <div className="row">
               <div className="col-md-8">

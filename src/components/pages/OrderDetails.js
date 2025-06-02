@@ -1,7 +1,8 @@
-import Header from "./Header";
+import Header from "../Header";
+import Spinner from "../Spinner";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { fetchOrderDetails } from "../features/products/productsSlice";
+import { fetchOrderDetails } from "../../features/products/productsSlice";
 import { Link, useNavigate, useParams } from "react-router-dom";
 
 const OrderDetails = () => {
@@ -26,6 +27,8 @@ const OrderDetails = () => {
   useEffect(() => {
     if (storageToken) {
       dispatch(fetchOrderDetails(orderId));
+    } else {
+      navigate("/login");
     }
   }, [dispatch, navigate, orderId, storageToken]);
   return (
@@ -34,7 +37,7 @@ const OrderDetails = () => {
       <main className="container py-5">
         <div>
           {error && <p>Error occured while fetching the Order details.</p>}
-          {status === "loading" && !orderDetails && <p>Loading...</p>}
+          {status === "loading" && !orderDetails && <Spinner />}
           {orderDetails && (
             <div>
               <div className="card">

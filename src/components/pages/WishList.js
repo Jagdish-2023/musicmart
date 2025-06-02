@@ -1,13 +1,14 @@
-import "../css/wishList.css";
+import "../../css/wishList.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import "../css/shoppingCart.css";
+import "../../css/shoppingCart.css";
 
-import Header from "./Header";
+import Header from "../Header";
+import Spinner from "../Spinner";
 import {
   updateFavouriteItem,
   updateCartList,
-} from "../features/products/productsSlice";
+} from "../../features/products/productsSlice";
 
 const WishList = () => {
   const navigate = useNavigate();
@@ -46,9 +47,10 @@ const WishList = () => {
       <main className="container mt-5">
         <div>
           <h4>My Wishlist ({updatedItems.length})</h4>
+          {updatedItems.length < 1 && <hr />}
 
           {error && <p>Failed to fetch Wishlist.</p>}
-          {status === "loading" && updatedItems.length < 1 && <p>Loading...</p>}
+          {status === "loading" && <Spinner />}
 
           {updatedItems.length >= 1 && (
             <div>

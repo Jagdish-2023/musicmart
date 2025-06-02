@@ -1,10 +1,11 @@
-import Header from "./Header";
+import Header from "../Header";
+import Spinner from "../Spinner";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   fetchUserProfile,
   updateUserProfile,
-} from "../features/products/productsSlice";
+} from "../../features/products/productsSlice";
 import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
@@ -51,7 +52,7 @@ const Profile = () => {
       <Header />
       <main className="container py-5">
         {error && <p>{error}</p>}
-        {status === "loading" && <p>Loading...</p>}
+        {status === "loading" && <Spinner />}
         {!isEditProfile && status === "success" && profileInfo && (
           <div>
             <h4>Personal Information</h4>

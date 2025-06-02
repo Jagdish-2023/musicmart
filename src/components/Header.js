@@ -34,7 +34,7 @@ const Header = () => {
 
   const logoutHandler = () => {
     dispatch(handleLogout());
-    navigate("/");
+    window.location.href = "/";
   };
 
   useEffect(() => {

@@ -7,14 +7,14 @@ import store from "./store/store";
 
 import App from "./App";
 import Products from "./features/products/Products";
-import ProductDetails from "./components/ProductDetails";
-import WishList from "./components/WishList";
-import ShoppingCart from "./components/ShoppingCart";
-import Checkout from "./components/Checkout";
-import Profile from "./components/Profile";
-import MyOrders from "./components/MyOrders";
-import OrderDetails from "./components/OrderDetails";
-import Addresses from "./components/Addresses";
+import ProductDetails from "./components/pages/ProductDetails";
+import WishList from "./components/pages/WishList";
+import ShoppingCart from "./components/pages/ShoppingCart";
+import Checkout from "./components/pages/Checkout";
+import Profile from "./components/pages/Profile";
+import MyOrders from "./components/pages/MyOrders";
+import OrderDetails from "./components/pages/OrderDetails";
+import Addresses from "./components//pages/Addresses";
 import LoginForm from "./components/LoginForm";
 
 const router = createBrowserRouter([

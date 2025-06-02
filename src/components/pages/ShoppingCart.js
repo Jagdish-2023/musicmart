@@ -1,14 +1,15 @@
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import "../css/shoppingCart.css";
-import Header from "./Header";
+import "../../css/shoppingCart.css";
+import Header from "../Header";
+import Spinner from "../Spinner";
 import {
   updateFavouriteItem,
   updateCartList,
   updateCartQuantity,
-} from "../features/products/productsSlice";
+} from "../../features/products/productsSlice";
 
-import CartTotalSummary from "./CartTotalSummary";
+import CartTotalSummary from "../CartTotalSummary";
 
 const ShoppingCart = () => {
   const navigate = useNavigate();
@@ -61,9 +62,12 @@ const ShoppingCart = () => {
       <Header />
       <main className="container py-5">
         <div>
-          <h4 className="mb-4">Shopping Cart</h4>
+          <div className="mb-4">
+            <h4>Shopping Cart</h4>
+            <hr />
+          </div>
           {error && <p>Failed to get Cart items</p>}
-          {status === "loading" && cartItems.length < 1 && <p>Loading...</p>}
+          {status === "loading" && <Spinner />}
           {cartItems.length >= 1 && (
             <div className="row">
               <div className="col-md-8">

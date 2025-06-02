@@ -1,9 +1,10 @@
-import "../css/myOrders.css";
-import Header from "./Header";
+import "../../css/myOrders.css";
+import Header from "../Header";
+import Spinner from "../Spinner";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { fetchAllOrders } from "../features/products/productsSlice";
+import { fetchAllOrders } from "../../features/products/productsSlice";
 
 const MyOrders = () => {
   const navigate = useNavigate();
@@ -36,6 +37,8 @@ const MyOrders = () => {
   useEffect(() => {
     if (storageToken) {
       dispatch(fetchAllOrders());
+    } else {
+      navigate("/login");
     }
   }, [dispatch, navigate, storageToken]);
   return (
@@ -48,7 +51,7 @@ const MyOrders = () => {
 
           <div>
             {error && <p>Failed to get the Orders.</p>}
-            {status === "loading" && allOrders.length < 1 && <p>Loading...</p>}
+            {status === "loading" && allOrders.length < 1 && <Spinner />}
             {allOrders.length > 0 &&
               allOrders
                 .map((data) => (
