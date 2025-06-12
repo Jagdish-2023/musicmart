@@ -1,70 +1,94 @@
-# Getting Started with Create React App
+# MusicMart
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An full-stack e-commerce app where user can see some listed products, add or remove to Cart & Wishlist, place order and see those products in Orders section. Built with React, Boostrap, Redux, Express, Node, MongoDB with JWT based authentication.
 
-## Available Scripts
+## Live demo
+[Run](https://musicmart.vercel.app)
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Login
+> **Guest** <br>
+> phone number: 7992729155 <br>
+> password: Jagdish@123
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Quick Start
+```
+git clone https://github.com/Jagdish-2023/musicmart.git
+cd <your-repo>
+npm install
+npm run dev
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Technologies
+- React, react-router, reduxjs/toolkit
+- Bootstrap
+- MongoDB,Mongoose
+- Node.js, Express.js
+- JWT (JSON Web Token)
 
-### `npm test`
+## Features
+**Products**
+- A filter section to apply all the filters for easy access to the products.
+- Products listing section showing all the products inside Bootstrap's Card.
+- User can add products to Wishlist & Cart or can see the details of product.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+**Wishlist**
+- It shows all the wishlist items that to buy later.
+- Can remove the item from wishlist or move the item to Cart.
 
-### `npm run build`
+**Cart**
+- Two sections having all the cart items and total cart summary.
+- User can increase or decrease the quantiy of the item.
+- Can move the item to wishlist or remove from Cart list.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Checkout**
+- Verify that the Delivery address exist before placing the order.
+- User can add a new address or choose a different address to place the order.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Orders**
+- It shows all the placed orders made by the user.
+- User can see the details about that particular Order.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Authentication**
+- JWT based authentication.
+- SignUp and SignIn feature to easily access to the account.
 
-### `npm run eject`
+## API Reference
+**Products**
+- GET/products - Fetch all Products.
+- GET/products/:productId - Specific product details.
+- GET/products/category/:categoryName - Products list filtered by category.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**Wishlist**
+- GET/favouriteItems - All Wishlist items.
+- POST/products/favourite/:productId - Add/Remove an from the Wishlist.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+**Cart**
+- GET/cartItems - List of all Cart items.
+- POST/product/cart_quantity - Update the quantity of an item in Cart.
+- POST/product/cart/:productId - Add/Remove an item from the Cart.
+- POST/move_cart_to_order - Move and add the cart items to Orders.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**Address**
+- GET/shipping_addresses - Delivery addresses belongs to User.
+- POST/add_ship_address - Add a new shipping address.
+- POST/update_address_deliver - Select delivery address to place the Order.
+- POST/update_address_details - Update the details of an address.
+- DELETE/delete_address/:addressId - Delete a shipping address.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**User**
+- GET/user_profile_info - User information details.
+- POST/update_user_profile - Update user details (fullName, dateOfBirth, email, phoneNumber etc).
 
-## Learn More
+**Orders**
+- GET/order_items - All ordered items placed by user.
+- GET/orders/:orderId - Order details of a particular order.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Authentication**
+- POST/register - Register a new user account.
+- POST/login - Sign in an existing user with credentials.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+## Contact
+For bugs or feature requests, please reach out to jagdishjpradhan@gmail.com 
