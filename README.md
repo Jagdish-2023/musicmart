@@ -9,13 +9,13 @@ An full-stack e-commerce app where user can see some listed products, add or rem
 
 ## Login
 > **Guest** <br>
-> phone number: 7992729155 <br>
-> password: Jagdish@123
+> phone number: `7992729155` <br>
+> password: `Jagdish@123`
 
 ## Quick Start
 ```
 git clone https://github.com/Jagdish-2023/musicmart.git
-cd <your-repo>
+cd musicmart
 npm install
 npm run dev
 ```
