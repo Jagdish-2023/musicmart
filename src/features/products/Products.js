@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Header from "../../components/Header";
 import { fetchProductsAsync } from "./productsSlice";
-import ProductsList from "../../components/ProductsList";
+import ProductsList from "../../components/pages/ProductsList";
 import FilterForm from "../filter/FilterForm";
 
 const Products = () => {

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import {
   updateFavouriteItem,
   updateCartList,
-} from "../features/products/productsSlice";
+} from "../../features/products/productsSlice";
 
 const ProductsList = ({ products }) => {
   const { filteredCategory, filteredPrice, filteredRating, filteredSortBy } =
@@ -245,7 +245,7 @@ const ProductsList = ({ products }) => {
               </div>
             ))}
 
-          {renderProducts.length < 1 && !error && (
+          {renderProducts.length < 1 && status === "success" && (
             <div className="mt-5">
               <p className="text-center">Products not found</p>
             </div>
